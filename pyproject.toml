@@ -1,0 +1,23 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "asyncpg>=0.31.0",
+    "dotenv>=0.9.9",
+    "fastapi>=0.136.1",
+    "ollama>=0.6.1",
+    "pillow>=12.2.0",
+    "pymupdf>=1.27.2",
+    "pytesseract>=0.3.13",
+    "python-multipart>=0.0.27",
+    "requests>=2.33.1",
+    "scikit-learn>=1.8.0",
+    "sentence-transformers>=5.4.0",
+    "spacy>=3.8.13",
+    "unstructured-inference>=1.6.6",
+    "unstructured[all-docs]>=0.22.18",
+    "uvicorn>=0.46.0",
+]
