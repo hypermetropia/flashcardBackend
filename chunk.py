@@ -2,7 +2,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 import re
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+_model = None
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = SentenceTransformer("all-MiniLM-L6-v2")
+    return _model
 class Chunk:
     def __init__(self, text):
         self.text = text
@@ -21,12 +27,12 @@ class Chunk:
                 for sent in senteces:
                     if(len(sent.split()) + curr_sz > max_block_words):
                         if(curr):
-                            block.append(" ".join(curr))
+                            blocks.append(" ".join(curr))
                             curr = [sent]
                             curr_sz = len(sent)
                     else:
                         curr.append(sent)
-                        curr_sz+=len(sent.split)
+                        curr_sz+=len(sent.split())
                 if(curr):
                     blocks.append(" ".join(curr))            
                             
@@ -34,6 +40,7 @@ class Chunk:
         return blocks
         
     def sem_chunk(self, threshold=0.42, max_words = 700, min_words= 200):
+        model = get_model()
         blocks = self.block_split()
         if not blocks: return []
         embeddings = model.encode(blocks)

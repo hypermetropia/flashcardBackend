@@ -16,8 +16,8 @@ VALUES ($1, $2)
 
 GET_QUERY = """
 SELECT id, collection,content, created_at
-FROM flashcard
-WHERE id = $1
+FROM flashcards
+WHERE collection = $1
 ORDER BY created_at DESC
 """
 
@@ -40,15 +40,15 @@ async def insert_table(collection_name: str, content: list[dict]):
         await conn.execute(
           INSERT_QUERY,
           collection_name, 
-          json.dumps(i)
+          i
         )
 
 async def get_table(collection_name: str):
   async with db.pool.acquire() as conn:
     rows = await conn.fetch(GET_QUERY, collection_name)
-    result = [dict(row) for row in rows]
+    result = [{**dict(row), "created_at": row["created_at"].isoformat()} for row in rows]
     return result
-async def delete_table(id):
+async def delete_table(id: int):
   async with db.pool.acquire() as conn:
     async with conn.transaction():
         await conn.execute(

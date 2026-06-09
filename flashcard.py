@@ -46,14 +46,15 @@ class FlashCard:
         """+chunk
 
         
+        no_of_try = 0
         while(True):
-            no_of_try = 0
             try:    
                 no_of_try+=1
                 response = generate(model="llama3.2", prompt=prompt)
                 result = response.response
                 result = self.parse_json(result)[0]
                 if(no_of_try>10):
+                    no_of_try = 0
                     return []
                 return result
             except:
